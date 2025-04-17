@@ -1,10 +1,3 @@
-"""
-main.py
-YouTube Audio Converter API
-Flask API لتحويل فيديوهات YouTube إلى ملفات MP3 بصيغة عالية الجودة
-باستخدام yt-dlp و FFmpeg مع نظام توكن للوصول المؤقت
-"""
-
 import secrets
 import threading
 from flask import Flask, request, jsonify, send_from_directory
@@ -33,7 +26,7 @@ def handle_audio_request():
             'preferredcodec': 'mp3',
             'preferredquality': '192'
         }],
-        'quiet': True
+        'quiet': True,
         'cookiefile': 'cookies.txt'
     }
 
@@ -74,10 +67,10 @@ def main():
         daemon=True
     )
     token_cleaner_thread.start()
+    app.run(debug=True)
 
+if name == "__main__":
     import os
-    port = int(os.environ.get("PORT", 10000))
-    app.run(host="0.0.0.0", port=port)
-
-if __name__ == "__main__":
+    port = int(os.environ.get('PORT', 10000))
     main()
+    app.run(host='0.0.0.0', port=port)
