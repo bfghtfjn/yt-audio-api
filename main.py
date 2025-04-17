@@ -11,10 +11,6 @@ from constants import *
 app = Flask(__name__)
 
 @app.route("/", methods=["GET"])
-def home():
-    return "YouTube to MP3 API is running!"
-
-@app.route("/convert", methods=["GET"])
 def handle_audio_request():
     video_url = request.args.get("url")
     if not video_url:
@@ -72,7 +68,7 @@ def main():
         daemon=True
     )
     token_cleaner_thread.start()
-    port = int(os.environ.get("PORT", 10000))
+    port = int(os.environ.get('PORT', 10000))
     app.run(host="0.0.0.0", port=port)
 
 if __name__ == "__main__":
