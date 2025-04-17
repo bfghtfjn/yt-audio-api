@@ -69,7 +69,7 @@ def main():
     token_cleaner_thread.start()
     app.run(debug=True)
 
-if name == "__main__":
+if __name__ == "__main__":
     import os
     port = int(os.environ.get('PORT', 10000))
     main()
