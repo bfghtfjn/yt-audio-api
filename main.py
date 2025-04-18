@@ -30,25 +30,30 @@ def convert_audio():
             'preferredcodec': 'mp3',
             'preferredquality': '192'
         }],
-        'cookiefile': 'cookies.txt',
-        'quiet': True
+        'quiet': True,
+        'cookiefile': 'cookies.txt'
     }
 
     try:
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
             ydl.download([video_url])
     except Exception as e:
-        return jsonify(error="Failed to download audio.", detail=str(e)), 500
+        return jsonify(error="Failed to download or convert audio.", detail=str(e)), 500
 
+    # نرجع رابط مباشر
     return jsonify(link=f"/download/{filename}")
 
-@app.route("/download/<path:filename>")
+@app.route("/download/<filename>")
 def download_file(filename):
     try:
-        return send_from_directory(ABS_DOWNLOADS_PATH, filename=filename, as_attachment=True)
+        return send_from_directory(ABS_DOWNLOADS_PATH, filename, as_attachment=True)
     except FileNotFoundError:
         return jsonify(error="File not found."), 404
 
+def run():
+    import os
+    port = int(os.environ.get('PORT', 10000))
+    app.run(host='0.0.0.0', port=port)
+
 if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 10000))
-    app.run(host="0.0.0.0", port=port)
+    run()
